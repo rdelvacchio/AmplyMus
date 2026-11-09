@@ -1,0 +1,42 @@
+@startuml
+skinparam shadowing false
+skinparam linetype polyline
+skinparam nodesep 50
+skinparam ranksep 50
+skinparam padding 10
+skinparam rectangle {
+  BorderThickness 1
+  RoundCorner 0
+  BackgroundColor white
+  BorderColor black
+}
+top to bottom direction
+
+circle " " as S #black
+
+rectangle "Home\n(Seguiti / Scopri)" as Home
+rectangle "Risultati ricerca" as Ris
+rectangle "Profilo utente" as Prof
+rectangle "Artista" as Art
+rectangle "Album" as Alb
+rectangle "Brano" as Bra
+rectangle "Scrivi / Modifica\nrecensione" as Rec
+rectangle "Modifica profilo" as ModP
+rectangle "Richiesta di verifica" as Ver
+
+S --> Home
+Home <--> Ris
+Home <--> Prof
+Ris <--> Prof
+Ris --> Art
+Ris --> Alb
+Ris --> Bra
+Art <--> Alb
+Alb <--> Bra
+Art --> Rec
+Alb --> Rec
+Bra --> Rec
+Prof <--> ModP
+Prof <--> Ver
+
+@enduml   

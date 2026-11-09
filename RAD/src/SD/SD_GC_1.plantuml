@@ -1,0 +1,26 @@
+@startuml
+actor ATT_VIS
+boundary "RicercaForm" as A
+control "RicercaControl" as C
+actor "ATT_API" as API
+entity "ContenutoMusicale" as D
+boundary "RisultatiContenutiView" as E
+
+activate A
+ATT_VIS -> A : fillForm()
+ATT_VIS -> A : selectFilter()
+ATT_VIS -> A : submit()
+A -> C ++ : <<create>>
+A -> C : startSearch()
+deactivate A
+
+C -> API ++ : searchContent()
+API --> C : content
+deactivate API
+
+C -> D : <<create>>
+
+C -> E ++ : <<create>>
+deactivate C
+
+@enduml

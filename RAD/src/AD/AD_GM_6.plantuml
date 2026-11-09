@@ -1,0 +1,61 @@
+@startuml
+skinparam monochrome true
+skinparam shadowing false
+skinparam ConditionStyle InsideDiamond
+skinparam swimlaneWidth same
+skinparam wrapWidth 200
+
+|Amministratore (ATT_ADM)|
+start
+:Clicca "Richieste di verifica";
+
+|Sistema|
+if (Richieste in attesa?) then ([nessuna])
+  :Mostra messaggio di nessuna richiesta;
+  stop
+else ([presenti])
+  :Mostra l'elenco delle richieste;
+endif
+
+|Amministratore (ATT_ADM)|
+:Seleziona una richiesta;
+
+|Sistema|
+:Mostra i dettagli e i comandi\n"Approva" e "Rifiuta";
+
+|Amministratore (ATT_ADM)|
+if (Quale operazione?) then ([approva])
+  :Clicca "Approva";
+else ([rifiuta])
+  :Clicca "Rifiuta";
+endif
+
+|Sistema|
+:Chiede di confermare l'operazione;
+
+|Amministratore (ATT_ADM)|
+if (Confermare?) then ([conferma])
+  |Amministratore (ATT_ADM)|
+  :Clicca "Conferma";
+else ([annulla])
+  :Clicca "Annulla";
+  |Sistema|
+  :Non modifica la richiesta\ne torna ai dettagli;
+  stop
+endif
+
+|Sistema|
+if (Salvataggio?) then ([errore])
+  :Mostra errore e mantiene\nla richiesta in attesa;
+  stop
+else ([riuscito])
+  if (Operazione scelta?) then ([approva])
+    :Imposta la richiesta come approvata;
+    :Assegna lo stato "verificato";
+  else ([rifiuta])
+    :Imposta la richiesta come rifiutata;
+  endif
+  :Mostra l'esito;
+  stop
+endif
+@enduml

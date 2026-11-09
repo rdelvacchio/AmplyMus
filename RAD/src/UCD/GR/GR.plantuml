@@ -1,0 +1,19 @@
+@startuml
+left to right direction
+skinparam packageStyle rectangle
+
+actor "ATT_VIS\n(Visitatore)" as VIS
+actor "ATT_REG\n(Utente registrato)" as REG
+
+REG --|> VIS
+
+rectangle "Gestione Recensioni (GR)" {
+  usecase "UC_GR_1\nConsultazione recensioni\ne commenti" as UC1
+  usecase "UC_GR_2\nScrittura recensione" as UC2
+  usecase "UC_GR_3\nModifica o eliminazione\nrecensione" as UC3
+}
+
+VIS --- UC1
+REG --- UC2
+REG --- UC3
+@enduml

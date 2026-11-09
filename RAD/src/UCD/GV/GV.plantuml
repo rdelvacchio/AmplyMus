@@ -1,0 +1,30 @@
+@startuml
+left to right direction
+skinparam packageStyle rectangle
+
+actor "ATT_VIS\n(Visitatore)" as VIS
+actor "ATT_REG\n(Utente registrato)" as REG
+actor "ATT_VER\n(Utente verificato)" as VER
+actor "ATT_API" as API
+
+REG --|> VIS
+VER --|> REG
+
+rectangle "Gestione Verificato (GVE)" {
+  usecase "UC_GVE_1\nRichiesta di verifica" as UC1
+  usecase "UC_GVE_2\nConsultazione statistiche\ndel profilo" as UC2
+  usecase "UC_GVE_3\nCreazione lista" as UC3
+  usecase "UC_GVE_4\nModifica o eliminazione lista" as UC4
+  usecase "UC_GVE_5\nGestione preferiti" as UC5
+  usecase "UC_GVE_6\nConsultazione liste\ne preferiti" as UC6
+}
+
+REG --- UC1
+VER --- UC2
+VER --- UC3
+VER --- UC4
+VER --- UC5
+VIS --- UC6
+
+UC6 --- API
+@enduml

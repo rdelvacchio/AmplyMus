@@ -1,0 +1,31 @@
+@startuml
+hide footbox
+skinparam style strictuml
+skinparam sequenceMessageAlign center
+
+actor ATT_UR
+participant "ScriviRecensioneButton" as A <<boundary>>
+participant "ScriviRecensioneControl" as B <<control>>
+participant "ScriviRecensioneForm" as C <<boundary>>
+participant "Recensione" as D <<entity>>
+participant "RecensionePubblicataView" as E <<boundary>>
+
+activate A
+ATT_UR -> A : press
+
+create B
+A --> B --++ : <<create>>
+
+create C
+B --> C --++ : <<create>>
+
+C --> B ++ : contents
+B -> C !! : <<destroy>>
+
+create D
+B --> D : <<create>>
+
+create E
+B --> E --++ : <<create>>
+deactivate E
+@enduml

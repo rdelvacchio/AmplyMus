@@ -1,0 +1,32 @@
+@startuml
+left to right direction
+skinparam packageStyle rectangle
+
+actor "ATT_VIS\n(Visitatore)" as VIS
+actor "ATT_REG\n(Utente registrato)" as REG
+
+REG --|> VIS
+
+rectangle "Gestione Social (GS)" {
+  usecase "UC_GS_1\nConsultazione profilo utente" as UC1
+  usecase "UC_GS_2\nConsultazione "Scopri"" as UC2
+  usecase "UC_GS_3\nGestione like" as UC3
+  usecase "UC_GS_4\nScrittura commento" as UC4
+  usecase "UC_GS_5\nModifica o eliminazione\ncommento" as UC5
+  usecase "UC_GS_6\nGestione follow" as UC6
+  usecase "UC_GS_7\nConsultazione "Seguiti"" as UC7
+  usecase "UC_GS_8\nSegnalazione contenuto" as UC8
+}
+
+VIS --- UC1
+VIS --- UC2
+REG --- UC3
+REG --- UC4
+REG --- UC5
+REG --- UC6
+REG --- UC7
+REG --- UC8
+
+UC6 .> UC1 : <<extend>>
+UC6 .> UC2 : <<extend>>
+@enduml

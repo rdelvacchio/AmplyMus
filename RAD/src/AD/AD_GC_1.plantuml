@@ -1,0 +1,46 @@
+@startuml
+skinparam monochrome true
+skinparam shadowing false
+skinparam ConditionStyle InsideDiamond
+skinparam swimlaneWidth same
+skinparam wrapWidth 200
+
+|Visitatore (ATT_VIS)|
+start
+:Inserisce il testo nel campo di ricerca;
+if (Quale filtro?) then ([contenuti musicali])
+  :Seleziona il filtro "Contenuti musicali";
+else ([utenti])
+  :Seleziona il filtro "Utenti";
+endif
+:Avvia la ricerca;
+
+|Sistema|
+if (Campo compilato?) then ([vuoto])
+  :Mostra un messaggio che invita a inserire testo nel campo di ricerca;
+  stop
+else ([compilato])
+endif
+
+if (Filtro scelto?) then ([utenti])
+  :Cerca gli utenti per username;
+else ([contenuti musicali])
+  :Richiede i contenuti;
+  |ATT_API|
+  :Cerca i contenuti;
+  |Sistema|
+  if (ATT_API risponde?) then ([non risponde])
+    :Mostra pagina di errore e attende una nuova ricerca;
+    stop
+  else ([risponde])
+  endif
+endif
+
+if (Risultati?) then ([nessuno])
+  :Mostra messaggio di nessun risultato;
+  stop
+else ([presenti])
+  :Mostra i risultati;
+  stop
+endif
+@enduml

@@ -1,0 +1,21 @@
+@startuml
+skinparam monochrome true
+skinparam shadowing false
+skinparam ArrowThickness 1.5
+
+actor "Visitatore" as VIS
+actor "Ospite" as OSP
+actor "Utente\nRegistrato" as REG
+actor "Utente\nVerificato" as VER
+actor "Amministratore" as ADM
+actor "API\n(attore esterno)" as API
+
+OSP -up-|> VIS
+ADM -up-|> VIS
+REG -up-|> VIS
+VER -up-|> REG
+
+OSP -[hidden]right- REG
+REG -[hidden]right- ADM
+API -[hidden]down- OSP
+@enduml

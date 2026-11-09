@@ -1,0 +1,40 @@
+@startuml
+skinparam shadowing false
+skinparam linetype ortho
+skinparam nodesep 50
+skinparam ranksep 35
+skinparam padding 5
+skinparam rectangle {
+  BorderThickness 1
+  RoundCorner 0
+  BackgroundColor white
+  BorderColor black
+}   
+top to bottom direction
+
+circle " " as S #black
+
+rectangle "Home\n(Scopri)" as Home
+rectangle "Registrazione" as Reg
+rectangle "Login" as Log
+rectangle "Risultati ricerca" as Ris
+rectangle "Profilo utente" as Prof
+rectangle "Artista" as Art
+rectangle "Album" as Alb
+rectangle "Brano" as Bra
+
+S <--> Home
+Home <-- Reg
+Home <--> Log
+Reg <--> Log
+Home <--> Ris
+Home <--> Prof
+Ris <--> Prof
+Ris <--> Art
+Ris <--> Alb
+Ris <--> Bra
+Art <--> Alb
+Alb <--> Bra
+Art <--> Bra
+
+@enduml

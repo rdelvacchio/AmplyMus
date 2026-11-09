@@ -1,0 +1,41 @@
+@startuml
+skinparam shadowing false
+skinparam linetype ortho
+skinparam nodesep 50
+skinparam padding 5
+skinparam ranksep 50
+skinparam rectangle {
+  BorderThickness 2
+  RoundCorner 0
+  BackgroundColor white
+  BorderColor black
+}
+top to bottom direction
+
+circle " " as S #black
+
+rectangle "Login area riservata" as Log
+rectangle "Area riservata" as Area
+rectangle "Elenco segnalazioni" as ElS
+rectangle "Dettaglio segnalazione" as DetS
+rectangle "Elenco richieste\ndi verifica" as ElR
+rectangle "Dettaglio richiesta" as DetR
+rectangle "Risultati ricerca\n(utenti)" as Ris
+rectangle "Profilo utente" as Prof
+rectangle "Artista" as Art
+rectangle "Album" as Alb
+rectangle "Brano" as Bra
+
+S --> Log
+Log <--> Area
+Area <--> ElS
+Area <--> ElR
+Area <--> Ris
+ElS <--> DetS
+ElR <--> DetR
+Ris --> Prof
+DetS <--> Prof
+DetS <--> Art
+DetS <--> Alb
+DetS <--> Bra
+@enduml

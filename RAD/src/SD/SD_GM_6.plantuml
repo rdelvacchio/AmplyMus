@@ -1,0 +1,47 @@
+@startuml
+
+actor ATT_ADM
+boundary "RichiesteVerificaButton" as A
+control "GestioneRichiestaVerificaControl" as B
+boundary "ElencoRichiesteView" as C
+boundary "SelezionaRichiestaButton" as D
+boundary "DettaglioRichiestaView" as E
+boundary "ApprovaButton" as F
+boundary "ConfermaValutazioneNotice" as G
+entity "RichiestaVerifica" as H
+boundary "EsitoValutazioneView" as I
+
+activate A
+ATT_ADM -> A : press()
+
+A -> B ++ : <<create>>
+deactivate A
+
+B -> C ++ : <<create>>
+deactivate B
+
+ATT_ADM -> D : press()
+D -> B ++ : selectionRequest()
+
+B -> E ++ : <<create>>
+deactivate B
+
+ATT_ADM -> F : press()
+F -> B ++ : approveRequest()
+
+B -> G ++ : <<create>>
+deactivate B
+
+G -> ATT_ADM : confirm()
+
+ATT_ADM -> G : confirm()
+G -> B ++ : confirmValidation()
+deactivate G
+
+B -> H : updateStatus()
+B -> H : assignVerifiedStatus()
+
+B -> I ++ : <<create>>
+deactivate B
+
+@enduml

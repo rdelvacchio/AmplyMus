@@ -1,0 +1,40 @@
+@startuml
+|Utente Registrato (ATT_REG)|
+start
+:Consulta le informazioni di un brano,\nalbum o artista;
+:Clicca su "Scrivi recensione";
+
+|Sistema|
+repeat
+  :Mostra modulo di inserimento\n(Titolo, Testo, Valutazione 1-5);
+
+  |Utente Registrato (ATT_REG)|
+  fork
+    :Inserisci titolo;
+  fork again
+    :Inserisci testo;
+  fork again
+    :Inserisci valutazione (1-5);
+  end fork
+  :Clicca su "Pubblica recensione";
+
+  |Sistema|
+  :Controlla la validità dei dati inseriti;
+backward :Mostra messaggio di errore\nindicando i campi non compilati;
+repeat while (Titolo e testo compilati\nAND valutazione tra 1 e 5?) is (No) not (Sì)
+
+:Tenta la pubblicazione della recensione;
+
+if (Salvataggio riuscito?) then (No)
+  :Mostra messaggio di errore\ne invita a ritentare l'operazione;
+  stop
+else (Sì)
+  :Mostra la recensione appena pubblicata\nnella pagina dell'elemento recensito;
+  note right
+    Il badge "verificato" compare
+    sulla recensione se l'autore
+    è un utente verificato.
+  end note
+  stop
+endif
+@enduml
