@@ -1,26 +1,31 @@
 @startuml
-actor ATT_VIS
-boundary "RicercaForm" as A
-control "RicercaControl" as C
-actor "ATT_API" as API
-entity "ContenutoMusicale" as D
-boundary "RisultatiContenutiView" as E
+hide footbox
+skinparam style strictuml
+skinparam sequenceMessageAlign center
 
-activate A
+actor ATT_VIS
+participant "RicercaForm" as A <<boundary>>
+actor "ATT_API" as API
+
 ATT_VIS -> A : fillForm()
+activate A
 ATT_VIS -> A : selectFilter()
 ATT_VIS -> A : submit()
-A -> C ++ : <<create>>
-A -> C : startSearch()
+
+create participant "RicercaControl" as C <<control>>
+A --> C ++ : <<create>>
 deactivate A
 
 C -> API ++ : searchContent()
 API --> C : content
 deactivate API
 
-C -> D : <<create>>
+create participant "ContenutoMusicale" as D <<entity>>
+C --> D : <<create>>
 
-C -> E ++ : <<create>>
+create participant "RisultatiContenutiView" as E <<boundary>>
+C --> E : <<create>>
+
+C -> D !! : <<destroy>>
 deactivate C
-
 @enduml

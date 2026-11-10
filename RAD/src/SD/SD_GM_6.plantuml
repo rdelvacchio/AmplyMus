@@ -1,47 +1,56 @@
 @startuml
+hide footbox
+skinparam style strictuml
+skinparam sequenceMessageAlign center
 
 actor ATT_ADM
-boundary "RichiesteVerificaButton" as A
-control "GestioneRichiestaVerificaControl" as B
-boundary "ElencoRichiesteView" as C
-boundary "SelezionaRichiestaButton" as D
-boundary "DettaglioRichiestaView" as E
-boundary "ApprovaButton" as F
-boundary "ConfermaValutazioneNotice" as G
-entity "RichiestaVerifica" as H
-boundary "EsitoValutazioneView" as I
+participant "RichiesteVerificaButton" as A <<boundary>>
+participant "RichiestaVerifica" as H <<entity>>
 
-activate A
 ATT_ADM -> A : press()
+activate A
 
-A -> B ++ : <<create>>
+create participant "GestioneRichiestaVerificaControl" as B <<control>>
+A --> B ++ : <<create>>
 deactivate A
 
-B -> C ++ : <<create>>
+create participant "ElencoRichiesteView" as C <<boundary>>
+B --> C  : <<create>>
+
+create participant "SelezionaRichiestaButton" as D <<boundary>>
+B --> D ++ : <<create>>
 deactivate B
 
 ATT_ADM -> D : press()
-D -> B ++ : selectionRequest()
+D -> B ++ : selectRequest()
+deactivate D
 
-B -> E ++ : <<create>>
+create participant "DettaglioRichiestaView" as E <<boundary>>
+B --> E : <<create>>
+
+create participant "ApprovaButton" as F <<boundary>>
+B --> F ++ : <<create>>
+deactivate F
 deactivate B
 
 ATT_ADM -> F : press()
 F -> B ++ : approveRequest()
+deactivate F
 
-B -> G ++ : <<create>>
+create participant "ConfermaValutazioneNotice" as G <<boundary>>
+B --> G ++ : <<create>>
 deactivate B
 
-G -> ATT_ADM : confirm()
 
 ATT_ADM -> G : confirm()
 G -> B ++ : confirmValidation()
+B -> G !! : <<destroy>>
 deactivate G
 
 B -> H : updateStatus()
-B -> H : assignVerifiedStatus()
 
-B -> I ++ : <<create>>
+create participant "EsitoValutazioneView" as I <<boundary>>
+B --> I ++ : <<create>>
+deactivate I
 deactivate B
-
 @enduml
