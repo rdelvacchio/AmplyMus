@@ -1,61 +1,42 @@
 @startuml
-skinparam monochrome true
-skinparam shadowing false
-skinparam ConditionStyle InsideDiamond
-skinparam swimlaneWidth same
-skinparam wrapWidth 200
-
 |Amministratore (ATT_ADM)|
 start
-:Clicca "Richieste di verifica";
+:Clicca su "Richieste di verifica";
 
 |Sistema|
-if (Richieste in attesa?) then ([nessuna])
-  :Mostra messaggio di nessuna richiesta;
+:Recupera le richieste in attesa;
+
+if (Richieste in attesa?) then (No)
+  :Mostra messaggio che informa che\nnon ci sono richieste in attesa;
   stop
-else ([presenti])
-  :Mostra l'elenco delle richieste;
+else (Sì)
 endif
 
-|Amministratore (ATT_ADM)|
-:Seleziona una richiesta;
+repeat
+  :Mostra l'elenco delle richieste\n(username, motivazione, "Approva" e "Rifiuta");
 
-|Sistema|
-:Mostra i dettagli e i comandi\n"Approva" e "Rifiuta";
-
-|Amministratore (ATT_ADM)|
-if (Quale operazione?) then ([approva])
-  :Clicca "Approva";
-else ([rifiuta])
-  :Clicca "Rifiuta";
-endif
-
-|Sistema|
-:Chiede di confermare l'operazione;
-
-|Amministratore (ATT_ADM)|
-if (Confermare?) then ([conferma])
   |Amministratore (ATT_ADM)|
-  :Clicca "Conferma";
-else ([annulla])
-  :Clicca "Annulla";
-  |Sistema|
-  :Non modifica la richiesta\ne torna ai dettagli;
-  stop
-endif
+  :Clicca su "Approva" oppure "Rifiuta"\nsu una richiesta;
 
-|Sistema|
-if (Salvataggio?) then ([errore])
-  :Mostra errore e mantiene\nla richiesta in attesa;
+  |Sistema|
+  :Chiede di confermare l'operazione;
+
+  |Amministratore (ATT_ADM)|
+  :Clicca su "Conferma" oppure "Annulla";
+
+  |Sistema|
+backward :Non modifica la richiesta;
+repeat while (Operazione confermata?) is (No) not (Sì)
+
+:Tenta il salvataggio della valutazione;
+
+if (Salvataggio riuscito?) then (No)
+  :Mostra messaggio di errore\ne invita a ritentare l'operazione;
+  :Mantiene la richiesta tra quelle in attesa;
   stop
-else ([riuscito])
-  if (Operazione scelta?) then ([approva])
-    :Imposta la richiesta come approvata;
-    :Assegna lo stato "verificato";
-  else ([rifiuta])
-    :Imposta la richiesta come rifiutata;
-  endif
-  :Mostra l'esito;
+else (Sì)
+  :Aggiorna lo stato della richiesta\ne assegna il verificato (se approvata);
+  :Rimuove la richiesta dall'elenco\ne aggiorna l'elenco;
   stop
 endif
 @enduml
