@@ -1,31 +1,26 @@
 @startuml
 skinparam monochrome true
 skinparam shadowing false
-skinparam nodesep 50
-skinparam ranksep 50
+skinparam nodesep 25
+skinparam ranksep 25
 skinparam ArrowThickness 1.5
 skinparam state {
   BorderThickness 2
 }
 
-[*] --> RecuperoRichieste : seleziona
+[*] --> RecuperaRichieste : press
 
-RecuperoRichieste --> NessunaRichiesta : [nessuna]
-RecuperoRichieste --> ElencoMostrato : [presenti]
+RecuperaRichieste --> MostraNessunaRichiesta : [nessuna]
+RecuperaRichieste --> MostraElenco : [presenti]
 
-NessunaRichiesta --> [*] 
+MostraNessunaRichiesta --> [*]
 
-ElencoMostrato --> DettaglioMostrato : seleziona richiesta
+MostraElenco --> ChiediConferma : [approva]/[rifiuta]
+ChiediConferma --> MostraElenco : [annulla]
+ChiediConferma --> AggiornaStato : [conferma]
 
-DettaglioMostrato --> AttesaConferma : [approva]
-DettaglioMostrato --> AttesaConferma : [rifiuta]
+AggiornaStato --> MostraErrore : [errore]
+AggiornaStato --> RecuperaRichieste : [riuscito]
 
-AttesaConferma --> DettaglioMostrato : [annulla]
-AttesaConferma --> Salvataggio : [conferma]
-
-Salvataggio --> ErroreMostrato : [errore]
-Salvataggio --> EsitoMostrato : [riuscito]
-
-ErroreMostrato --> [*] 
-EsitoMostrato --> RecuperoRichieste : torna all'elenco
+MostraErrore --> [*]
 @enduml
