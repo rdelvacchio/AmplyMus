@@ -8,19 +8,20 @@ skinparam state {
   BorderThickness 2
 }
 
-[*] --> RecuperaRichieste : press
+[*] --> RichiesteRicevute : create
 
-RecuperaRichieste --> MostraNessunaRichiesta : [nessuna]
-RecuperaRichieste --> MostraElenco : [presenti]
+RichiesteRicevute --> NessunaRichiesta : [nessuna]
+RichiesteRicevute --> ElencoRicevuto : [presenti]
 
-MostraNessunaRichiesta --> [*]
+NessunaRichiesta --> [*] : destroy
 
-MostraElenco --> ChiediConferma : [approva]/[rifiuta]
-ChiediConferma --> MostraElenco : [annulla]
-ChiediConferma --> AggiornaStato : [conferma]
+ElencoRicevuto --> ConfermaAzione : [approva]
+ElencoRicevuto --> ConfermaAzione : [rifiuta]
+ConfermaAzione --> ElencoRicevuto : [annulla]
+ConfermaAzione --> StatoSalvato : [conferma]
 
-AggiornaStato --> MostraErrore : [errore]
-AggiornaStato --> RecuperaRichieste : [riuscito]
+StatoSalvato --> Errore : [errore]
+StatoSalvato --> RichiesteRicevute : [riuscito]
 
-MostraErrore --> [*]
+Errore --> [*] : destroy
 @enduml

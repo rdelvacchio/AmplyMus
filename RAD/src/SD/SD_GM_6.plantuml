@@ -5,26 +5,35 @@ skinparam sequenceMessageAlign center
 
 actor ATT_ADM
 participant "RichiesteVerificaButton" as A <<boundary>>
+participant "RichiestaVerifica" as H <<entity>>
 
-ATT_ADM -> A : press()
+ATT_ADM -> A ++ : press()
 
 create participant "GestioneRichiestaVerificaControl" as B <<control>>
-A --> B : <<create>>
+A --> B ++ : <<create>>
+deactivate A
+
+B -> H : getPendingRequests()
+H -> B: returnRequests()
 
 create participant "ElencoRichiesteView" as C <<boundary>>
-B --> C : <<create>>
+B --> C ++ : <<create>>
 
-create participant "ApprovaButton" as F <<boundary>>
-B --> F : <<create>>
-
-F -> B ++ : approveRequest()
+C -> B : getPendingRequests(request)
 
 create participant "ConfermaValutazioneNotice" as G <<boundary>>
-B --> G : <<create>>
+B --> G ++ : <<create>>
 
+deactivate C
 G -> B : confirmValidation()
 B -> G !! : <<destroy>>
 
-B -> C : updateList()
+B -> H : updateStatus()
+activate C
+
+B -> C !! : <<destroy>>
+
+create participant "ElencoRichiesteView" as C2 <<boundary>>
+B --> C2 : <<create>>
 deactivate B
 @enduml

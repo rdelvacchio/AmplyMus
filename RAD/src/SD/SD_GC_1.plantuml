@@ -5,23 +5,27 @@ skinparam sequenceMessageAlign center
 
 actor ATT_VIS
 participant "RicercaForm" as A <<boundary>>
+participant "RicercaControl" as C <<control>>
+participant "RisultatiContenutiView" as B <<boundary>>
 actor "ATT_API" as API
 
-ATT_VIS -> A : fillForm()
-activate A
+ATT_VIS -> A ++: fillForm()
 ATT_VIS -> A : selectFilter()
 ATT_VIS -> A : submit()
 
-create participant "RicercaControl" as C <<control>>
-A --> C ++ : <<create>>
-deactivate A
+create C
+A --> C -- : <<create>>
+activate C
 
-C -> API ++ : searchContent()
+
+C -> API  : searchContent()
+activate API
 API --> C : content
 deactivate API
 
-create participant "RisultatiContenutiView" as E <<boundary>>
-C --> E : <<create>>
+create B
+C --> B : <<create>>
 
 deactivate C
 @enduml
+

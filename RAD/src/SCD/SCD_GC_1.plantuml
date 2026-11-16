@@ -11,18 +11,18 @@ skinparam state {
 [*] --> ControlloCampo : avvia ricerca
 
 ControlloCampo --> CampoVuoto : [vuoto]
-ControlloCampo --> RicercaContenuti : [contenuti musicali]
-ControlloCampo --> RicercaUtenti : [utenti]
+ControlloCampo --> ContenutiRicevuti : [contenuti musicali]
+ControlloCampo --> UtentiRicevuti : [utenti]
 
-RicercaContenuti --> NessunRisultato : [nessuno]
-RicercaContenuti --> RisultatiMostrati : [presenti]
-RicercaContenuti --> ServizioNonDisponibile : [apiNonDisponibile]
+ContenutiRicevuti --> NessunRisultato : [nessuno]
+ContenutiRicevuti --> RisultatiMostrati : [presenti]
+ContenutiRicevuti --> ServizioNonDisponibile : [apiNonDisponibile]
 
-RicercaUtenti --> NessunRisultato : [nessuno]
-RicercaUtenti --> RisultatiMostrati : [presenti]
+UtentiRicevuti --> NessunRisultato : [nessuno]
+UtentiRicevuti --> RisultatiMostrati : [presenti]
 
-CampoVuoto --> [*]
-ServizioNonDisponibile --> [*]
-NessunRisultato --> [*]
-RisultatiMostrati --> [*] 
+CampoVuoto --> [*] : destroy
+ServizioNonDisponibile --> [*] : destroy
+NessunRisultato --> [*] : destroy
+RisultatiMostrati --> [*] : destroy
 @enduml

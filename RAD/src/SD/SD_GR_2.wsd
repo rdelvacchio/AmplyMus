@@ -10,8 +10,8 @@ participant "ScriviRecensioneForm" as C <<boundary>>
 participant "Recensione" as D <<entity>>
 participant "RecensionePubblicataView" as E <<boundary>>
 
-activate A
-ATT_UR -> A : press
+
+ATT_UR -> A ++ : press()
 
 create B
 A --> B --++ : <<create>>
@@ -26,6 +26,5 @@ create D
 B --> D : <<create>>
 
 create E
-B --> E --++ : <<create>>
-deactivate E
+B --> E -- : <<create>>
 @enduml
