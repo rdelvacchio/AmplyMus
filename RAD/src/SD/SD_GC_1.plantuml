@@ -20,12 +20,8 @@ C -> API ++ : searchContent()
 API --> C : content
 deactivate API
 
-create participant "ContenutoMusicale" as D <<entity>>
-C --> D : <<create>>
-
 create participant "RisultatiContenutiView" as E <<boundary>>
 C --> E : <<create>>
 
-C -> D !! : <<destroy>>
 deactivate C
 @enduml
