@@ -1,16 +1,16 @@
 @startuml
-[*] --> VisualizzazioneForm : richiesta scrittura recensione
+[*] --> CreazioneForm : richiesta scrittura recensione
 
-VisualizzazioneForm --> ValidazioneDati : invio form
+CreazioneForm --> ValidaDati : invio form
 
-ValidazioneDati --> VisualizzazioneErroreCampi : [dati incompleti]
-VisualizzazioneErroreCampi --> VisualizzazioneForm : [form aggiornato]
+ValidaDati --> ErroreCampi : [dati incompleti]
+ErroreCampi --> CreazioneForm : [form aggiornato]
 
-ValidazioneDati --> SalvataggioRecensione : [dati validi]
+ValidaDati --> SalvaRecensione : [dati validi]
 
-SalvataggioRecensione --> VisualizzazioneErroreSistema : [errore di sistema]
-SalvataggioRecensione --> VisualizzazioneRecensionePubblicata : [salvataggio OK]
+SalvaRecensione --> ErroreSistema : [errore]
+SalvaRecensione --> RecensionePubblicata : [successo]
 
-VisualizzazioneErroreSistema --> [*]
-VisualizzazioneRecensionePubblicata --> [*]
+ErroreSistema -->  [*] : destroy
+RecensionePubblicata --> [*] : destroy
 @enduml
