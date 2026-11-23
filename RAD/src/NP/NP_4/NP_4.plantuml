@@ -19,7 +19,6 @@ rectangle "Area riservata" as Area
 rectangle "Elenco segnalazioni" as ElS
 rectangle "Dettaglio segnalazione" as DetS
 rectangle "Elenco richieste\ndi verifica" as ElR
-rectangle "Dettaglio richiesta" as DetR
 rectangle "Risultati ricerca\n(utenti)" as Ris
 rectangle "Profilo utente" as Prof
 rectangle "Artista" as Art
@@ -32,7 +31,6 @@ Area <--> ElS
 Area <--> ElR
 Area <--> Ris
 ElS <--> DetS
-ElR <--> DetR
 Ris --> Prof
 DetS <--> Prof
 DetS <--> Art
