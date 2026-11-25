@@ -1,0 +1,70 @@
+@startuml
+top to bottom direction
+
+' =========================
+' Stile e impaginazione
+' =========================
+skinparam monochrome true
+skinparam shadowing false
+skinparam linetype ortho
+skinparam ArrowThickness 1.2
+skinparam nodesep 85
+skinparam ranksep 75
+skinparam padding 10
+skinparam defaultFontName SansSerif
+skinparam defaultFontSize 13
+
+' =========================
+' Nodo Client
+' =========================
+node "Client Device" <<device>> as CLIENT {
+  node "Web Browser" <<execution environment>> as BROWSER {
+    artifact "Web UI" as UI_ART
+  }
+}
+
+' =========================
+' Nodo Application Server
+' =========================
+node "Application Server" <<device>> as APP_SERVER {
+  node "Web / Application Server\n<<execution environment>>" as WEB_ENV {
+    
+    artifact "Sottosistemi Applicativi" as APP_ART {
+      component "Moderazione" as GM
+      component "Verificato" as GVE
+      component "Social" as GS
+      component "Recensioni" as GR
+      component "Catalogo" as GC
+      component "Account" as GA
+    }
+
+    artifact "Data Access & Integration" as DAL_ART {
+      component "Storage JPA" as JPA
+      component "Integrazione API" as API_INT
+    }
+  }
+}
+
+' =========================
+' Nodo Database Server
+' =========================
+node "Database Server" <<device>> as DB_SERVER {
+  node "DBMS\n<<execution environment>>" as DBMS {
+    database "Database" as DB
+  }
+}
+
+' =========================
+' Nodo Sistema Esterno
+' =========================
+node "External Server" <<device>> as EXT_SERVER {
+  artifact "ATT_API\n<<external>>" as API
+}
+
+' =========================
+' Relazioni di comunicazione
+' =========================
+BROWSER -- WEB_ENV : <<HTTPS>>
+JPA -- DB : <<JDBC>>
+API_INT -- API : <<REST / HTTPS>>
+@enduml

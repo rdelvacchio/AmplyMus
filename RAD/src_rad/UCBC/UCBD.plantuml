@@ -1,3 +1,4 @@
+
 @startuml
 left to right direction
 skinparam packageStyle rectangle
@@ -8,16 +9,17 @@ actor "ATT_API" as API
 rectangle "Boundary Conditions (UCBC)" {
   usecase "UCBC_1\nAvvio del Sistema" as UC1
   usecase "UCBC_2\nSpegnimento del Sistema" as UC2
-  usecase "UCBC_3\nIndisponibilità di ATT_API" as UC3
-  usecase "UCBC_4\nFallimento del Sistema" as UC4
-  usecase "UCBC_5\nErrore dei dati persistenti" as UC5
+  usecase "UCBC_3\nFallimento del Sistema" as UC3
+  usecase "UCBC_4\nErrore dei dati persistenti" as UC4
+  usecase "UCBC_5\nIndisponibilità di ATT_API" as UC5
 }
 
 ADM --- UC1
 ADM --- UC2
 ADM --- UC4
+ADM --- UC3
 ADM --- UC5
 
-API --- UC1
-API --- UC3
+API --- UC5
+
 @enduml

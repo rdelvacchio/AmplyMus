@@ -1,0 +1,88 @@
+@startuml
+top to bottom direction
+
+' =========================
+' Stile e impaginazione
+' =========================
+skinparam monochrome true
+skinparam shadowing false
+skinparam componentStyle uml2
+skinparam linetype ortho
+skinparam ArrowThickness 1.2
+skinparam nodesep 95
+skinparam ranksep 75
+skinparam padding 10
+skinparam packageStyle rectangle
+skinparam defaultFontName SansSerif
+skinparam defaultFontSize 13
+
+skinparam component {
+  Padding 14
+  MinWidth 145
+}
+
+' =========================
+' Livello di presentazione
+' =========================
+package "Presentation Layer" as PL {
+  component "Web UI" as UI
+}
+
+' =========================
+' Sottosistemi applicativi
+' =========================
+package "Sottosistemi Applicativi" as APP {
+  component "Moderazione" as GM
+  component "Verificato" as GVE
+  component "Social" as GS
+  component "Recensioni" as GR
+  component "Catalogo" as GC
+  component "Account" as GA
+
+  ' Dipendenze funzionali
+  GM ..> GVE
+  GM ..> GS
+  GM ..> GR
+  GM ..> GA
+
+  GVE ..> GS
+  GVE ..> GR
+  GVE ..> GC
+  GVE ..> GA
+
+  GS ..> GR
+  GS ..> GA
+
+  GR ..> GC
+  GR ..> GA
+
+  GC ..> GA
+}
+
+' =========================
+' Livello di accesso ai dati e integrazione
+' =========================
+package "Data Access & Integration Layer" as DAL {
+  component "Storage JPA" as JPA
+  component "Integrazione API" as API_INT
+}
+
+' =========================
+' Persistenza fisica e sistemi esterni
+' =========================
+database "Database" as DB
+
+package "Sistemi Esterni" as EXT {
+  component "ATT_API\n<<external>>" as API
+}
+
+' =========================
+' Relazioni tra livelli
+' =========================
+UI ..> APP : <<uses>>
+APP ..> JPA : <<uses>>
+GC ..> API_INT : <<uses>>
+
+JPA ..> DB : <<JDBC>>
+API_INT -down..> API : <<REST / HTTPS>>
+@enduml
