@@ -1,0 +1,127 @@
+@startuml
+left to right direction
+
+skinparam nodesep 90
+skinparam ranksep 110
+skinparam padding 8
+skinparam shadowing false
+skinparam monochrome true
+skinparam roundcorner 8
+hide circle
+
+skinparam ClassFontSize 18
+skinparam ClassFontStyle bold
+skinparam ClassAttributeFontSize 14
+skinparam ArrowFontSize 14
+skinparam ArrowThickness 2
+
+
+class UtenteRegistrato {
+  id: Long
+  username: String
+  email: String
+  passwordHash: String
+  bio: String
+  immagineProfilo: String
+  verificato: boolean
+  amministratore: boolean
+  --
+  aggiornaProfilo(bio: String, immagine: String): void
+  cambiaPassword(vecchiaPwd: String, nuovaPwd: String): boolean
+  segui(utente: UtenteRegistrato): void
+  smettiDiSeguire(utente: UtenteRegistrato): void
+  aggiungiPreferito(contenuto: ContenutoMusicale): void
+  rimuoviPreferito(contenuto: ContenutoMusicale): void
+  creaLista(titolo: String): Lista
+  scriviRecensione(contenuto: ContenutoMusicale, titolo: String, testo: String, voto: int): Recensione
+  aggiungiCommento(recensione: Recensione, testo: String): Commento
+  inviaRichiestaVerifica(motivazione: String): RichiestaVerifica
+  effettuaSegnalazione(motivo: String): Segnalazione
+}
+
+class ContenutoMusicale {
+  idAPI: String
+  
+  getDettagli(): Map<String, Object>
+  calcolaValutazioneMedia(): float
+}
+
+class Recensione {
+  id: Long
+  titolo: String
+  testo: String
+  valutazione: int
+  dataCreazione: LocalDateTime
+  --
+  modifica(titolo: String, testo: String, valutazione: int): void
+  aggiungiLike(utente: UtenteRegistrato): void
+  rimuoviLike(utente: UtenteRegistrato): void
+  contaLike(): int
+  aggiungiCommento(commento: Commento): void
+  rimuoviCommento(idCommento: Long): void
+}
+
+class Commento {
+  id: Long
+  testo: String
+  dataCreazione: LocalDateTime
+  --
+  modificaTesto(nuovoTesto: String): void
+}
+
+class Lista {
+  id: Long
+  titolo: String
+  dataCreazione: LocalDateTime
+  --
+  rinomina(nuovoTitolo: String): void
+  aggiungiContenuto(contenuto: ContenutoMusicale): void
+  rimuoviContenuto(idAPI: String): void
+  getContenuti(): List<ContenutoMusicale>
+}
+
+class RichiestaVerifica {
+  id: Long
+  motivazione: String
+  dataInvio: LocalDateTime
+  stato: StatoGestione
+  --
+  approva(admin: UtenteRegistrato): void
+  rifiuta(admin: UtenteRegistrato): void
+}
+
+class Segnalazione {
+  id: Long
+  motivo: String
+  dataInvio: LocalDateTime
+  stato: StatoGestione
+  --
+  risolvi(admin: UtenteRegistrato): void
+}
+
+' Associazioni fascia superiore
+RichiestaVerifica "0..1" -down- "1" UtenteRegistrato : invia
+Lista "*" -down- "1" UtenteRegistrato : crea
+Lista "*" -down- "*" ContenutoMusicale : contiene
+UtenteRegistrato "*" -up- "*" ContenutoMusicale : preferiti
+
+' Relazione ricorsiva
+UtenteRegistrato "follower *" -- "seguito *" UtenteRegistrato : segue
+
+' Associazioni fascia inferiore
+UtenteRegistrato "1" -down- "*" Recensione : scrive
+UtenteRegistrato "*" -down- "*" Recensione : mette like
+Recensione "*" -up- "1" ContenutoMusicale : riferito
+
+UtenteRegistrato "1" -down- "*" Segnalazione : effettua
+Segnalazione "*" -right- "0..1" Recensione : relativa
+Segnalazione "*" -down- "0..1" Commento : associata
+
+Recensione "1" *-- "*" Commento : contiene
+UtenteRegistrato "1" -down- "*" Commento : scrive
+
+
+' Vincoli invisibili per evitare incroci
+Segnalazione -[hidden]right- Recensione
+Recensione -[hidden]right- ContenutoMusicale
+@enduml
